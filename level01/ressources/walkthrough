@@ -1,0 +1,13 @@
+On fait ls et toujours rien
+on a tente de voir les fichiers lisible pour le user level01 mais sans succes
+
+C'est une bonne pratique d'aller regarder dans le /etc/passwd
+
+cat /etc/passwd
+> flag01:42hDRfypTqqnw:3001:3001::/home/flag/flag01:/bin/bash
+
+Dans kali: 
+echo "flag01:42hDRfypTqqnw" > hash.txt
+john --format=descrypt hash.txt --wordlist=/usr/share/wordlists/rockyou.txt
+
+> abcdefg (flag01)

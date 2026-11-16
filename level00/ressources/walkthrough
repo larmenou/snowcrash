@@ -1,0 +1,12 @@
+on fait ls et on ne voit aucun fichier
+
+find / -user flag00 2>/dev/null
+=>
+/usr/sbin/john
+/rofs/usr/sbin/john
+
+cat /usr/sbin/john
+=> cdiiddwpgswtgt
+
+dans un rot decrypt on trouve: nottoohardhere
+c'est le mot de passe de flag00

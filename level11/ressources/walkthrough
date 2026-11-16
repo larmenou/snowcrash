@@ -1,0 +1,13 @@
+on a script lua level11.lua qui est un server sur 127.0.0.1:5151 on observe qu'il compare un mdp hashe
+mais ce qui nous interesse c'est qu'il utilise io.popen("echo "..pass.." | sha1sum", "r") pour hasher le mot de passe
+on peut donc faire une injection de commande tell que " test; getflag > /tmp/flag11output # "
+pour que le mdp hashe soit "test" et que la commande getflag soit executee
+le # permet de commenter la fin de la ligne et d'eviter une erreur de syntaxe
+le mdp sera donc "test" et la commande getflag sera executee et le flag sera dans /tmp/flag11output
+ensuit on peut lire le flag avec la commande cat /tmp/flag11output
+
+nc 127.0.0.1 5151
+
+puis 
+
+test; getflag > /tmp/flag11output #  (directement dans le password)

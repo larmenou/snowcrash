@@ -1,0 +1,4 @@
+on ouvre le fichier l'executable getflag dans ghidra, on remarque que la meme fonction 
+ft_des est presente que dans le level13, en cherchant un peu plus loin on voit tous les flags
+
+on entre dans le flag code dans notre fonction reverse du level13 et on obtient le flag final

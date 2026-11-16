@@ -1,0 +1,17 @@
+ls
+> level02.pcap
+
+dans un autre terminal : 
+scp -P 4243 level02@127.0.0.1:/home/user/level02/level02.pcap .
+chmod 777 level02.pcap
+
+on ouvre le fichier avec wireshark
+On follow le TCP stream pour voir la requete en entiere et on on peut voir un password: ft_wandr...NDRel.L0L
+
+Or ce mot de passe ne fonctionne pas.
+En regardant plus en detail le dump hex, on remarque que les "." ne sont pas des points,
+mais des caracteres speciaux que wireshark a remplace.
+Ces caracteres sont encodes sous "7f" ce qui correspond a DEL en ascii (backspace)
+
+en prenant cette info en compte on obtient un nouveau mot de passe:
+ft_waNDReL0L

